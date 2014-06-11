@@ -17,6 +17,7 @@
 echo "Arch Linux Installer by Jacob Wiltse"
 echo "This will install a base system with some default options."
 echo "Ensure that you have an ethernet cable plugged into the ethernet port"
+echo "THIS WILL ERASE YOUR MAIN HARD DISK!!!!!!!!!"
 read -p "Continue? (y/n) " -n 1 -r
 echo
 # Get ethernet adapter name
