@@ -17,6 +17,13 @@
 echo "Arch Linux Installer by Jacob Wiltse"
 echo "This will install a base system with some default options."
 echo "Ensure that you have an ethernet cable plugged into the ethernet port"
+
+echo "Lets choose some options"
+echo -n "Enter your hostname: "
+read hostname
+echo -n "Choose your root password: "
+read password
+
 echo "THIS WILL ERASE YOUR MAIN HARD DISK!!!!!!!!!"
 read -p "Continue? (y/n) " -n 1 -r
 echo
@@ -62,8 +69,6 @@ then
     cp /etc/resolv.conf /mnt/etc/resolv.conf
     
     # Set the hostname
-    echo -n "Enter the hostname: "
-    read hostname
     chroot /mnt /bin/sh -c "echo $hostname > /etc/hostname"
 
     # Set timezone info
@@ -74,8 +79,7 @@ then
     chroot /mnt /bin/sh -c "locale-gen"
 
     # Set root passwd
-    echo "Enter the new root password: "
-    chroot /mnt /bin/sh -c "passwd root"
+    chroot /mnt /bin/sh -c "echo $password | passwd --stdin"
 
     # Make initial ram disk
     chroot /mnt /bin/sh -c "mkinitcpio -p linux"
