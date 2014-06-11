@@ -21,7 +21,7 @@ echo "THIS WILL ERASE YOUR MAIN HARD DISK!!!!!!!!!"
 read -p "Continue? (y/n) " -n 1 -r
 echo
 # Get ethernet adapter name
-$eth = ls /sys/class/net | head -1 | awk '{print $1}'
+$eth="ls /sys/class/net | head -1 | awk '{print $1}'"
 
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
@@ -35,8 +35,9 @@ then
     dd bs=512 count=1 if=/dev/zero of=/dev/sda
     
     # Create new partitions
-    parted /dev/sda --script mkpart primary 0% -2G
-    parted /dev/sda --script mkpart primary -2G 100%
+    parted /dev/sda --script "mklabel msdos"
+    parted /dev/sda --script "mkpart primary ext2 0% -2G"
+    parted /dev/sda --script "mkpart primary linux-swap -2G 100%"
     
     # Format partitions
     mkfs.ext4 /dev/sda1
