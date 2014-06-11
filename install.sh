@@ -79,7 +79,7 @@ then
     chroot /mnt /bin/sh -c "locale-gen"
 
     # Set root passwd
-    chroot /mnt /bin/sh -c "echo $password | passwd --stdin"
+    chroot /mnt /bin/sh -c "echo $password\n$password | passwd --stdin"
 
     # Make initial ram disk
     chroot /mnt /bin/sh -c "mkinitcpio -p linux"
