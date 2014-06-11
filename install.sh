@@ -22,7 +22,7 @@ echo "Lets choose some options"
 echo -n "Enter your hostname: "
 read hostname
 echo -n "Choose your root password: "
-read password
+read -s password
 
 echo "THIS WILL ERASE YOUR MAIN HARD DISK!!!!!!!!!"
 read -p "Continue? (y/n) " -n 1 -r
