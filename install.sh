@@ -14,6 +14,21 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+## Configuration Section
+
+# These are the package required for the installer to succeeed
+$basepkgs="base base-devel syslinux"
+
+# These are additional user defined packages
+$userpkgs="sudo vim wireless_tools"
+
+# How much swap do you want? (in gigabytes) The rest will be root
+$swapsize="2"
+
+##########################################
+###### END OF CONFIGURATION BLOCK ########
+##########################################
+
 echo "Arch Linux Installer by Jacob Wiltse"
 echo "This will install a base system with some default options."
 echo "Ensure that you have an ethernet cable plugged into the ethernet port"
@@ -43,8 +58,8 @@ then
     
     # Create new partitions
     parted /dev/sda --script "mklabel msdos"
-    parted /dev/sda --script "mkpart primary ext2 0% -2G"
-    parted /dev/sda --script "mkpart primary linux-swap -2G 100%"
+    parted /dev/sda --script "mkpart primary ext2 0% -{$swapsize}G"
+    parted /dev/sda --script "mkpart primary linux-swap -{$swapsize}G 100%"
     
     # Format partitions
     mkfs.ext4 /dev/sda1
@@ -57,7 +72,7 @@ then
     swapon /dev/sda2
     
     # Install base system
-    pacstrap /mnt base base-devel vim sudo wireless_tools syslinux
+    pacstrap /mnt $basepkgs
 
     # Generate fstab
     genfstab -p /mnt >> /mnt/etc/fstab
@@ -80,6 +95,11 @@ then
 
     # Set root passwd
     chroot /mnt /bin/sh -c "echo root:$password | chpasswd"
+
+    # Install user packages
+    if [ "$userpkgs" != "" ]; then
+        chroot /mnt /bin/sh -c "pacman --noconfirm -Syu $userpkgs"
+    fi
 
     # Make initial ram disk
     chroot /mnt /bin/sh -c "mkinitcpio -p linux"
