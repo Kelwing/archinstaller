@@ -17,13 +17,13 @@
 ## Configuration Section
 
 # These are the package required for the installer to succeeed
-$basepkgs="base base-devel syslinux"
+basepkgs="base base-devel syslinux"
 
 # These are additional user defined packages
-$userpkgs="sudo vim wireless_tools"
+userpkgs="sudo vim wireless_tools"
 
 # How much swap do you want? (in gigabytes) The rest will be root
-$swapsize="2"
+swapsize="2"
 
 ##########################################
 ###### END OF CONFIGURATION BLOCK ########
@@ -58,8 +58,8 @@ then
     
     # Create new partitions
     parted /dev/sda --script "mklabel msdos"
-    parted /dev/sda --script "mkpart primary ext2 0% -{$swapsize}G"
-    parted /dev/sda --script "mkpart primary linux-swap -{$swapsize}G 100%"
+    parted /dev/sda --script "mkpart primary ext2 0% -${swapsize}G"
+    parted /dev/sda --script "mkpart primary linux-swap -${swapsize}G 100%"
     
     # Format partitions
     mkfs.ext4 /dev/sda1
