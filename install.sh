@@ -78,7 +78,7 @@ then
     pacstrap /mnt $basepkgs
 
     # Generate fstab
-    genfstab -p /mnt >> /mnt/etc/fstab
+    genfstab -p -U /mnt >> /mnt/etc/fstab
 
     # Prepare chroot
     mount -t proc proc /mnt/proc/
