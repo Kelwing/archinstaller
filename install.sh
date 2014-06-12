@@ -25,6 +25,9 @@ userpkgs="sudo vim wireless_tools"
 # How much swap do you want? (in gigabytes) The rest will be root
 swapsize="2"
 
+# What timezone would you like to use?
+timezone="America/Detroit"
+
 ##########################################
 ###### END OF CONFIGURATION BLOCK ########
 ##########################################
@@ -87,7 +90,7 @@ then
     chroot /mnt /bin/sh -c "echo $hostname > /etc/hostname"
 
     # Set timezone info
-    chroot /mnt /bin/sh -c "ln -s /usr/share/zoneinfo/America/Detroit /etc/localtime"
+    chroot /mnt /bin/sh -c "ln -s /usr/share/zoneinfo/$timezone /etc/localtime"
 
     # Set locale
     chroot /mnt /bin/sh -c 'echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen'
