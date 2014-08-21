@@ -20,7 +20,7 @@
 basepkgs="base base-devel syslinux"
 
 # These are additional user defined packages
-userpkgs="sudo vim wireless_tools nvidia nvidia-utils nvidia-libgl xorg-server xorg-xinit mate mate-extra gdm"
+userpkgs="sudo vim wireless_tools nvidia nvidia-utils nvidia-libgl xorg-server xorg-xinit xf86-input-synaptics mate mate-extra gdm"
 
 # How much swap do you want? (in gigabytes) The rest will be root
 swapsize="2"
