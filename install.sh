@@ -28,6 +28,9 @@ swapsize="2"
 # What timezone would you like to use?
 timezone="America/Detroit"
 
+# Should the hardware clock be utc or localtime?
+hwclock="utc"
+
 ##########################################
 ###### END OF CONFIGURATION BLOCK ########
 ##########################################
@@ -89,12 +92,24 @@ then
     # Set the hostname
     chroot /mnt /bin/sh -c "echo $hostname > /etc/hostname"
 
+    # New filesystem adds UTC TZ by defult, so lets delete that first
+    chroot /mnt /bin/sh -c "rm /etc/localtime"
     # Set timezone info
     chroot /mnt /bin/sh -c "ln -s /usr/share/zoneinfo/$timezone /etc/localtime"
 
     # Set locale
     chroot /mnt /bin/sh -c 'echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen'
     chroot /mnt /bin/sh -c "locale-gen"
+    
+    # Let's avoid the new annoying boot prompt
+    chroot /mnt /bin/sh -c "echo LANG=en_US.UTF-8 > /etc/locale.conf"
+
+    # Set the hardware clock
+    if [ "$hwclock" = "localtime" ]; then
+        chroot /mnt /bin/sh -c "hwclock --systohc --localtime"
+    else
+        chroot /mnt /bin/sh -c "hwclock --systohc --utc"
+    fi
 
     # Set root passwd
     chroot /mnt /bin/sh -c "echo root:$password | chpasswd"
