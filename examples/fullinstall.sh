@@ -14,6 +14,8 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+# This example is designed to get you to a working desktop on a laptop
+
 ## Configuration Section
 
 # These are the package required for the installer to succeeed
