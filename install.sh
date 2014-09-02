@@ -128,7 +128,7 @@ then
     sed -i 's/sda3/sda1/g' /mnt/boot/syslinux/syslinux.cfg
 
     # Set up networking in new system
-    cp /etc/netcfg/eth /mnt/etc/netcfg/
+    cp /etc/netctl/eth /mnt/etc/netctl/
     chroot /mnt /bin/sh -c "netctl enable eth"
     
     # Unmount our new system
