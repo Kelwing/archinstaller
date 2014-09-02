@@ -49,7 +49,8 @@ echo "THIS WILL ERASE YOUR MAIN HARD DISK!!!!!!!!!"
 read -p "Continue? (y/n) " -n 1 -r
 echo
 # Get ethernet adapter name
-$eth="ls /sys/class/net | head -1 | awk '{print $1}'"
+unalias ls
+eth=`ls /sys/class/net | head -1 | awk '{print $1}'`
 
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
