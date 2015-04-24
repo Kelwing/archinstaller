@@ -31,6 +31,9 @@ timezone="America/Detroit"
 # Should the hardware clock be utc or localtime?
 hwclock="utc"
 
+# Set the drive you want to install to
+drive="sda"
+
 ##########################################
 ###### END OF CONFIGURATION BLOCK ########
 ##########################################
@@ -51,7 +54,8 @@ echo
 # Get ethernet adapter name
 unalias ls
 eth=`ls /sys/class/net | head -1 | awk '{print $1}'`
-
+rootpart="${drive}1"
+swappart="${drive}2"
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
     # Try to start networking
@@ -61,22 +65,22 @@ then
     netctl start eth
 
     # Wipe Partition Table
-    dd bs=512 count=1 if=/dev/zero of=/dev/sda
+    dd bs=512 count=1 if=/dev/zero of=/dev/$drive
     
     # Create new partitions
-    parted /dev/sda --script "mklabel msdos"
-    parted /dev/sda --script "mkpart primary ext2 0% -${swapsize}G"
-    parted /dev/sda --script "mkpart primary linux-swap -${swapsize}G 100%"
+    parted /dev/$drive --script "mklabel msdos"
+    parted /dev/$drive --script "mkpart primary ext2 0% -${swapsize}G"
+    parted /dev/$drive --script "mkpart primary linux-swap -${swapsize}G 100%"
     
     # Format partitions
-    mkfs.ext4 /dev/sda1
-    mkswap /dev/sda2
+    mkfs.ext4 /dev/$rootpart
+    mkswap /dev/$swappart
     
     # Mount new system
-    mount /dev/sda1 /mnt
+    mount /dev/$rootpart /mnt
     
     # Enable swap
-    swapon /dev/sda2
+    swapon /dev/$swappart
     
     # Install base system
     pacstrap /mnt $basepkgs
@@ -125,7 +129,7 @@ then
 
     # Configure Syslinux
     chroot /mnt /bin/sh -c "syslinux-install_update -i -a -m"
-    sed -i 's/sda3/sda1/g' /mnt/boot/syslinux/syslinux.cfg
+    sed -i 's/sda3/$rootpart/g' /mnt/boot/syslinux/syslinux.cfg
 
     # Set up networking in new system
     cp /etc/netctl/eth /mnt/etc/netctl/
