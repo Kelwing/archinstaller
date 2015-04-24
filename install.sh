@@ -129,7 +129,7 @@ then
 
     # Configure Syslinux
     chroot /mnt /bin/sh -c "syslinux-install_update -i -a -m"
-    sed -i 's/sda3/$rootpart/g' /mnt/boot/syslinux/syslinux.cfg
+    sed -i "s/sda3/$rootpart/g" /mnt/boot/syslinux/syslinux.cfg
 
     # Set up networking in new system
     cp /etc/netctl/eth /mnt/etc/netctl/
